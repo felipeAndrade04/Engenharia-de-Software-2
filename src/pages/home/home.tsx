@@ -8,6 +8,10 @@ import { FiUsers, FiUser } from "react-icons/fi";
 export const Home = () => {
   const navigate = useNavigate();
 
+  const navigateToStartGame = () => {
+    navigate("/iniciar-partida");
+  };
+
   return (
     <Stack
       width="100vw"
@@ -35,6 +39,7 @@ export const Home = () => {
             borderColor="brand.100"
           >
             <Button
+              onClick={navigateToStartGame}
               paddingX="32px"
               color="brand.600"
               borderRadius="full"
@@ -52,6 +57,7 @@ export const Home = () => {
             borderColor="brand.100"
           >
             <Button
+              onClick={navigateToStartGame}
               paddingX="32px"
               color="brand.600"
               borderRadius="full"
