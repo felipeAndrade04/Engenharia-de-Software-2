@@ -3,8 +3,15 @@ import Logo from "../../assets/logo.png";
 import { Select } from "../../components";
 import { IoPlayOutline } from "react-icons/io5";
 import { User } from "./components";
+import { useNavigate } from "react-router-dom";
 
 export const StartGame = () => {
+  const navigate = useNavigate();
+
+  const navigateToGame = () => {
+    navigate("/partida");
+  };
+
   const gameType = "Multiplayer";
 
   const data = [
@@ -57,6 +64,7 @@ export const StartGame = () => {
               borderColor="brand.100"
             >
               <Button
+                onClick={navigateToGame}
                 paddingX="32px"
                 color="brand.600"
                 borderRadius="full"
