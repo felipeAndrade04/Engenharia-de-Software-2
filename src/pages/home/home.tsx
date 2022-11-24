@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import Carousel from "../../assets/carousel.png";
 import Logo from "../../assets/logo.png";
 import { FiUsers, FiUser } from "react-icons/fi";
+import { GameMode, useGameStore } from "../../store";
 
 export const Home = () => {
   const navigate = useNavigate();
+  const updateGameMode = useGameStore((state) => state.updateGameMode);
 
-  const navigateToStartGame = () => {
+  const startGame = (difficulty: GameMode) => {
+    updateGameMode(difficulty);
     navigate("/iniciar-partida");
   };
 
@@ -39,7 +42,7 @@ export const Home = () => {
             borderColor="brand.100"
           >
             <Button
-              onClick={navigateToStartGame}
+              onClick={() => startGame("SinglePlayer")}
               paddingX="32px"
               color="brand.600"
               borderRadius="full"
@@ -57,7 +60,7 @@ export const Home = () => {
             borderColor="brand.100"
           >
             <Button
-              onClick={navigateToStartGame}
+              onClick={() => startGame("MultiPlayer")}
               paddingX="32px"
               color="brand.600"
               borderRadius="full"

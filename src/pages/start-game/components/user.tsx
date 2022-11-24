@@ -1,8 +1,15 @@
 import { HStack, Image, Stack } from "@chakra-ui/react";
+import { FieldError, useFormContext } from "react-hook-form";
 import UserImg from "../../../assets/user.png";
 import { Input } from "../../../components";
 
-export const User = () => {
+type UserProps = {
+  name: string;
+};
+
+export const User = ({ name }: UserProps) => {
+  const { register, formState } = useFormContext();
+
   return (
     <HStack spacing="40px" alignItems="flex-start">
       <Stack
@@ -17,10 +24,11 @@ export const User = () => {
       </Stack>
 
       <Input
-        name="name"
         label="nome do usuário"
         width="228px"
         placeholder="Nome"
+        error={formState.errors[name] as FieldError}
+        {...register(name)}
       />
     </HStack>
   );
