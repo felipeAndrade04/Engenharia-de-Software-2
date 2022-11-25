@@ -4,8 +4,8 @@ import CardImg from "../../../../assets/card.png";
 export const Card = () => {
   return (
     <Stack
-      width="128px"
-      height="160px"
+      width="100px"
+      height="125px"
       borderRadius="8px"
       boxShadow="lg"
       margin="0px !important"

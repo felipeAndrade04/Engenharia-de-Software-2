@@ -3,7 +3,8 @@ import { useGameStore } from "../../store";
 import { Card, Header, User } from "./components";
 
 const cards = [
-  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+  22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
 ];
 
 export const Game = () => {
@@ -16,12 +17,13 @@ export const Game = () => {
     <Stack width="100vw" height="100vh" bg="whiteAlpha.50">
       <Header />
       <HStack
-        paddingX="68px"
-        paddingY="24px"
+        padding="14px"
         spacing="24px"
         alignItems="flex-start"
+        maxW="1092px"
+        marginX="auto !important"
       >
-        <Stack spacing="32px">
+        <Stack spacing="24px">
           <User
             selected={user1.id === currentUser}
             name={user1.name}
@@ -36,7 +38,7 @@ export const Game = () => {
           )}
         </Stack>
 
-        <HStack flexWrap="wrap" gap="16px">
+        <HStack flexWrap="wrap" gap="8px">
           {cards.map((card) => (
             <Card />
           ))}
