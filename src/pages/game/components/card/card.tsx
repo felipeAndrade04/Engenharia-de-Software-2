@@ -1,4 +1,4 @@
-import { Image, Stack } from "@chakra-ui/react";
+import { Image, keyframes, Stack } from "@chakra-ui/react";
 import BackSideCard from "../../../../assets/card.png";
 import { CardType } from "../../cards";
 
@@ -17,6 +17,12 @@ export const Card = ({
 }: CardProps) => {
   const { source, order } = card;
 
+  const flip = keyframes`
+  from { transform: rotateY(180deg); }
+  to { transform: rotateY(0deg); }
+`;
+  const animation = `${flip} 0.5s`;
+
   const onClick = () => {
     if (lockedBoard || flipped) return;
 
@@ -32,8 +38,39 @@ export const Card = ({
       margin="0px !important"
       order={order}
       onClick={onClick}
+      position="relative"
     >
-      <Image src={flipped ? source : BackSideCard} height="full" width="full" />
+      {flipped && (
+        <Image
+          style={{
+            transformStyle: "preserve-3d",
+            transform: "rotateY(0deg)",
+          }}
+          transform={"revert-layer"}
+          animation={animation}
+          src={source}
+          height="full"
+          width="full"
+          position="absolute"
+          top={0}
+          left={0}
+        />
+      )}
+      {!flipped && (
+        <Image
+          style={{
+            transformStyle: "preserve-3d",
+            transform: "rotateY(0deg)",
+          }}
+          animation={animation}
+          src={BackSideCard}
+          height="full"
+          width="full"
+          position="absolute"
+          top={0}
+          left={0}
+        />
+      )}
     </Stack>
   );
 };

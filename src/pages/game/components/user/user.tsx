@@ -1,4 +1,4 @@
-import { Image, Stack, Text } from "@chakra-ui/react";
+import { Image, ScaleFade, Stack, Text } from "@chakra-ui/react";
 import UserImg from "../../../../assets/user.png";
 
 interface UserType {
@@ -20,6 +20,7 @@ export const User = ({ selected, name, pontuation }: UserType) => {
       borderWidth="2px"
       borderColor={selected ? "brand.600" : "white"}
       position="relative"
+      transition="border-color 0.6s"
     >
       <Stack
         padding="4px"
@@ -43,20 +44,20 @@ export const User = ({ selected, name, pontuation }: UserType) => {
         {pontuation}
       </Text>
 
-      {selected && (
-        <Stack
-          paddingX="16px"
-          paddingY="8px"
-          borderRadius="full"
-          bg="brand.600"
-          position="absolute"
-          bottom={"-20px"}
-        >
-          <Text fontSize="12px" color="white" fontWeight="400">
-            Sua vez!
-          </Text>
-        </Stack>
-      )}
+      <Stack position="absolute" bottom={"-20px"}>
+        <ScaleFade initialScale={0.9} in={selected}>
+          <Stack
+            paddingX="16px"
+            paddingY="8px"
+            borderRadius="full"
+            bg="brand.600"
+          >
+            <Text fontSize="12px" color="white" fontWeight="400">
+              Sua vez!
+            </Text>
+          </Stack>
+        </ScaleFade>
+      </Stack>
     </Stack>
   );
 };
