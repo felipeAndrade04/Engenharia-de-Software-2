@@ -32,6 +32,7 @@ import Card29 from "../../assets/card-29.png";
 import Card30 from "../../assets/card-30.png";
 import Card31 from "../../assets/card-31.png";
 import Card32 from "../../assets/card-32.png";
+import Card33 from "../../assets/card-33.png";
 
 const easy = [
   Card1,
@@ -62,11 +63,11 @@ const medium = [
   Card22,
   Card23,
   Card24,
+  Card25,
 ];
 
 const hard = [
   ...medium,
-  Card25,
   Card26,
   Card27,
   Card28,
@@ -74,6 +75,7 @@ const hard = [
   Card30,
   Card31,
   Card32,
+  Card33,
 ];
 
 export interface CardType {

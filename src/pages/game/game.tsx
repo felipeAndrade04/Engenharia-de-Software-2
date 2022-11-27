@@ -1,10 +1,33 @@
-import { HStack, Stack } from "@chakra-ui/react";
+import { Grid, GridItem, HStack, Stack } from "@chakra-ui/react";
 import { useGameStore } from "../../store";
 import { CardType } from "./cards";
 import { Card, Header, User } from "./components";
 
+interface Size {
+  [key: string]: {
+    size: "sm" | "md" | "lg";
+    columns: number;
+  };
+}
+
+const sizes: Size = {
+  easy: {
+    size: "lg",
+    columns: 8,
+  },
+  medium: {
+    size: "md",
+    columns: 10,
+  },
+  hard: {
+    size: "sm",
+    columns: 11,
+  },
+};
+
 export const Game = () => {
   const gameMode = useGameStore((state) => state.gameMode);
+  const difficulty = useGameStore((state) => state.difficulty);
   const user1 = useGameStore((state) => state.user1);
   const user2 = useGameStore((state) => state.user2);
   const currentUser = useGameStore((state) => state.currentUser);
@@ -73,7 +96,8 @@ export const Game = () => {
         padding="14px"
         spacing="24px"
         alignItems="flex-start"
-        maxW="1092px"
+        justifyContent="center"
+        width="full"
         marginX="auto !important"
       >
         <Stack spacing="24px">
@@ -90,22 +114,27 @@ export const Game = () => {
             />
           )}
         </Stack>
-
-        <HStack flexWrap="wrap" gap="8px">
+        <Grid
+          templateColumns={`repeat(${sizes[difficulty].columns}, 1fr)`}
+          gap={4}
+        >
           {cards.map((card) => (
-            <Card
-              key={card.id}
-              card={card}
-              flipped={
-                firstCard.id === card.id ||
-                secondCard.id === card.id ||
-                card.matched
-              }
-              lockedBoard={!!firstCard.id && !!secondCard.id}
-              onCardClick={onCardClick}
-            />
+            <GridItem width="full">
+              <Card
+                size={sizes[difficulty].size}
+                key={card.id}
+                card={card}
+                flipped={
+                  firstCard.id === card.id ||
+                  secondCard.id === card.id ||
+                  card.matched
+                }
+                lockedBoard={!!firstCard.id && !!secondCard.id}
+                onCardClick={onCardClick}
+              />
+            </GridItem>
           ))}
-        </HStack>
+        </Grid>
       </HStack>
     </Stack>
   );
