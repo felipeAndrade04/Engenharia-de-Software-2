@@ -19,11 +19,29 @@ import Card16 from "../../assets/card-16.png";
 import Card17 from "../../assets/card-17.png";
 import Card18 from "../../assets/card-18.png";
 import Card19 from "../../assets/card-19.png";
+import Card20 from "../../assets/card-20.png";
+import Card21 from "../../assets/card-21.png";
+import Card22 from "../../assets/card-22.png";
+import Card23 from "../../assets/card-23.png";
+import Card24 from "../../assets/card-24.png";
+import Card25 from "../../assets/card-25.png";
+import Card26 from "../../assets/card-26.png";
+import Card27 from "../../assets/card-27.png";
+import Card28 from "../../assets/card-28.png";
+import Card29 from "../../assets/card-29.png";
+import Card30 from "../../assets/card-30.png";
+import Card31 from "../../assets/card-31.png";
+import Card32 from "../../assets/card-32.png";
 
-const easy = [Card1, Card2, Card3, Card4, Card5, Card6, Card7, Card8];
-
-const medium = [
-  ...easy,
+const easy = [
+  Card1,
+  Card2,
+  Card3,
+  Card4,
+  Card5,
+  Card6,
+  Card7,
+  Card8,
   Card9,
   Card10,
   Card11,
@@ -34,7 +52,29 @@ const medium = [
   Card16,
 ];
 
-const hard = [...medium, Card17, Card18, Card19];
+const medium = [
+  ...easy,
+  Card17,
+  Card18,
+  Card19,
+  Card20,
+  Card21,
+  Card22,
+  Card23,
+  Card24,
+];
+
+const hard = [
+  ...medium,
+  Card25,
+  Card26,
+  Card27,
+  Card28,
+  Card29,
+  Card30,
+  Card31,
+  Card32,
+];
 
 export interface CardType {
   id: string;
