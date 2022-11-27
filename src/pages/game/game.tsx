@@ -105,12 +105,14 @@ export const Game = () => {
             selected={user1.id === currentUser}
             name={user1.name}
             pontuation={user1.pontuation}
+            image={user1.image}
           />
           {gameMode === "MultiPlayer" && (
             <User
               selected={user2.id === currentUser}
               name={user2.name}
               pontuation={user2.pontuation}
+              image={user2.image}
             />
           )}
         </Stack>

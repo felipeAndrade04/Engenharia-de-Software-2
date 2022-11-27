@@ -1,10 +1,13 @@
 import create from "zustand";
 import { persist } from "zustand/middleware";
 import { CardType, cards } from "../pages/game/cards";
+import User1 from "../assets/user1.png";
+import User2 from "../assets/user2.png";
 
 export type User = {
   id: string;
   name: string;
+  image: string;
   pontuation: number;
 };
 
@@ -20,11 +23,13 @@ const INITIAL_STATE = {
     id: "1",
     name: "",
     pontuation: 0,
+    image: User1 as string,
   } as User,
   user2: {
     id: "2",
     name: "",
     pontuation: 0,
+    image: User2 as string,
   } as User,
   currentUser: "1" as CurrentUser,
   difficulty: "easy" as Difficulty,
@@ -42,6 +47,8 @@ type State = typeof INITIAL_STATE & {
   updateUser2Name: (name: string) => void;
   updateUser1Pontuation: (pontuation: number) => void;
   updateUser2Pontuation: (pontuation: number) => void;
+  updateUser1Image: (image: string) => void;
+  updateUser2Image: (image: string) => void;
   updateFirstCard: (card: CardType) => void;
   updateSecondCard: (card: CardType) => void;
   updateCards: (cards: CardType[]) => void;
@@ -82,6 +89,20 @@ export const useGameStore = create<State>()(
           user2: {
             ...state.user2,
             pontuation,
+          },
+        })),
+      updateUser1Image: (image) =>
+        set((state) => ({
+          user1: {
+            ...state.user1,
+            image,
+          },
+        })),
+      updateUser2Image: (image) =>
+        set((state) => ({
+          user2: {
+            ...state.user2,
+            image,
           },
         })),
       updateFirstCard: (firstCard) => set({ firstCard }),

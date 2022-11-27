@@ -2,12 +2,13 @@ import { Button, HStack, Image, Stack } from "@chakra-ui/react";
 import Logo from "../../assets/logo.png";
 import { Select } from "../../components";
 import { IoPlayOutline } from "react-icons/io5";
-import { User } from "./components";
+import { ChangeUserImageModal, User } from "./components";
 import { useNavigate } from "react-router-dom";
 import { Difficulty, useGameStore } from "../../store";
 import * as Yup from "yup";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
 
 const data = [
   {
@@ -31,11 +32,19 @@ type FormData = {
 };
 
 export const StartGame = () => {
+  const [modalIsVisible, setModalIsVisible] = useState(false);
+  const [selectedUser, setSelectedUser] = useState("1");
   const navigate = useNavigate();
   const gameMode = useGameStore((state) => state.gameMode);
+  const user1 = useGameStore((state) => state.user1);
+  const user2 = useGameStore((state) => state.user2);
   const updateDifficulty = useGameStore((state) => state.updateDifficulty);
   const updateUser1Name = useGameStore((state) => state.updateUser1Name);
   const updateUser2Name = useGameStore((state) => state.updateUser2Name);
+  const updateUser1Image = useGameStore((state) => state.updateUser1Image);
+  const updateUser2Image = useGameStore((state) => state.updateUser2Image);
+
+  const currentImage = selectedUser === "1" ? user1.image : user2.image;
 
   const schema = Yup.object({
     user1: Yup.string().required("Nome obrigatório"),
@@ -56,6 +65,15 @@ export const StartGame = () => {
     navigate("/partida");
   };
 
+  const onOpenModal = (user: string) => {
+    setSelectedUser(user);
+    setModalIsVisible(true);
+  };
+
+  const onChangeImage = (image: string) => {
+    selectedUser === "1" ? updateUser1Image(image) : updateUser2Image(image);
+  };
+
   return (
     <Stack height="100vh">
       <Stack
@@ -72,8 +90,18 @@ export const StartGame = () => {
         <HStack alignItems="flex-start" justifyContent="space-between">
           <Stack spacing="72px">
             <FormProvider {...methods}>
-              <User name="user1" />
-              {gameMode === "MultiPlayer" && <User name="user2" />}
+              <User
+                name="user1"
+                image={user1.image}
+                openModal={() => onOpenModal("1")}
+              />
+              {gameMode === "MultiPlayer" && (
+                <User
+                  name="user2"
+                  image={user2.image}
+                  openModal={() => onOpenModal("2")}
+                />
+              )}
             </FormProvider>
           </Stack>
 
@@ -106,6 +134,12 @@ export const StartGame = () => {
           </Stack>
         </HStack>
       </Stack>
+      <ChangeUserImageModal
+        currentImage={currentImage}
+        isOpen={modalIsVisible}
+        onClose={() => setModalIsVisible(false)}
+        onChangeImage={onChangeImage}
+      />
     </Stack>
   );
 };

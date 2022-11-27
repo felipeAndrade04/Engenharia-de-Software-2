@@ -1,13 +1,15 @@
 import { HStack, Image, Stack } from "@chakra-ui/react";
 import { FieldError, useFormContext } from "react-hook-form";
-import UserImg from "../../../assets/user.png";
 import { Input } from "../../../components";
+import { HiOutlinePencil } from "react-icons/hi";
 
 type UserProps = {
   name: string;
+  image: string;
+  openModal: () => void;
 };
 
-export const User = ({ name }: UserProps) => {
+export const User = ({ name, image, openModal }: UserProps) => {
   const { register, formState } = useFormContext();
 
   return (
@@ -20,7 +22,27 @@ export const User = ({ name }: UserProps) => {
         borderWidth="3px"
         borderColor="brand.100"
       >
-        <Image src={UserImg} minW="164px" minH="164px" />
+        <Image src={image} maxW="164px" maxH="164px" />
+        <Stack
+          position="absolute"
+          top="-6px"
+          right="-6px"
+          padding="4px"
+          borderRadius="full"
+          background="brand.600"
+          cursor="pointer"
+          _hover={{ filter: "brightness(0.8)" }}
+          onClick={openModal}
+        >
+          <Stack
+            borderWidth="2px"
+            borderColor="white"
+            borderRadius="full"
+            padding="8px"
+          >
+            <HiOutlinePencil size="22px" />
+          </Stack>
+        </Stack>
       </Stack>
 
       <Input
