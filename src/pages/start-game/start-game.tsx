@@ -38,6 +38,7 @@ export const StartGame = () => {
   const gameMode = useGameStore((state) => state.gameMode);
   const user1 = useGameStore((state) => state.user1);
   const user2 = useGameStore((state) => state.user2);
+  const difficulty = useGameStore((state) => state.difficulty);
   const updateDifficulty = useGameStore((state) => state.updateDifficulty);
   const updateUser1Name = useGameStore((state) => state.updateUser1Name);
   const updateUser2Name = useGameStore((state) => state.updateUser2Name);
@@ -56,6 +57,11 @@ export const StartGame = () => {
 
   const methods = useForm<FormData>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      user1: user1.name,
+      user2: user2.name,
+      difficulty,
+    },
   });
 
   const onSubmit: SubmitHandler<FormData> = (values) => {
