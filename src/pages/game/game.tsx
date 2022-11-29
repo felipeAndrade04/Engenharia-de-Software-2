@@ -1,7 +1,7 @@
 import { Grid, GridItem, HStack, Stack } from "@chakra-ui/react";
 import { useGameStore } from "../../store";
 import { CardType } from "./cards";
-import { Card, Header, User } from "./components";
+import { Card, Header, User, WinningUserModal } from "./components";
 
 interface Size {
   [key: string]: {
@@ -138,6 +138,7 @@ export const Game = () => {
           ))}
         </Grid>
       </HStack>
+      <WinningUserModal isOpen={true} onClose={() => {}} user={user1} />
     </Stack>
   );
 };
