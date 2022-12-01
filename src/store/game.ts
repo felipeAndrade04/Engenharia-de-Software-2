@@ -52,6 +52,7 @@ type State = typeof INITIAL_STATE & {
   updateFirstCard: (card: CardType) => void;
   updateSecondCard: (card: CardType) => void;
   updateCards: (cards: CardType[]) => void;
+  restartGame: () => void;
 };
 
 export const useGameStore = create<State>()(
@@ -108,6 +109,18 @@ export const useGameStore = create<State>()(
       updateFirstCard: (firstCard) => set({ firstCard }),
       updateSecondCard: (secondCard) => set({ secondCard }),
       updateCards: (cards) => set({ cards }),
+      restartGame: () =>
+        set((state) => ({
+          cards: cards[state.difficulty],
+          user1: {
+            ...state.user1,
+            pontuation: 0,
+          },
+          user2: {
+            ...state.user2,
+            pontuation: 0,
+          },
+        })),
     }),
     {
       name: "memorizando",

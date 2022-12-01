@@ -1,4 +1,6 @@
 import { Grid, GridItem, HStack, Stack } from "@chakra-ui/react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useGameStore } from "../../store";
 import { CardType } from "./cards";
 import { Card, Header, User, WinningUserModal } from "./components";
@@ -25,7 +27,15 @@ const sizes: Size = {
   },
 };
 
+const totalCards = {
+  easy: 16,
+  medium: 25,
+  hard: 33,
+};
+
 export const Game = () => {
+  const navigate = useNavigate();
+  const [showWinner, setShowWinner] = useState(false);
   const gameMode = useGameStore((state) => state.gameMode);
   const difficulty = useGameStore((state) => state.difficulty);
   const user1 = useGameStore((state) => state.user1);
@@ -34,10 +44,13 @@ export const Game = () => {
   const firstCard = useGameStore((state) => state.firstCard);
   const secondCard = useGameStore((state) => state.secondCard);
   const cards = useGameStore((state) => state.cards);
+  const [, setTotalPoints] = useState(user1.pontuation + user2.pontuation);
   const updateCurrentUser = useGameStore((state) => state.updateCurrentUser);
   const updateFirstCard = useGameStore((state) => state.updateFirstCard);
   const updateSecondCard = useGameStore((state) => state.updateSecondCard);
   const updateCards = useGameStore((state) => state.updateCards);
+  const clear = useGameStore((state) => state.clear);
+  const restartGameStore = useGameStore((state) => state.restartGame);
   const updateUser1Pontuation = useGameStore(
     (state) => state.updateUser1Pontuation
   );
@@ -63,6 +76,14 @@ export const Game = () => {
       currentUser === "1"
         ? updateUser1Pontuation(user1.pontuation + 1)
         : updateUser2Pontuation(user2.pontuation + 1);
+
+      setTotalPoints((points) => {
+        const newTotalPoints = points + 1;
+
+        checkEndOfGame(newTotalPoints);
+
+        return newTotalPoints;
+      });
     }
 
     unFlipCards(card);
@@ -87,6 +108,23 @@ export const Game = () => {
       updateFirstCard({ id: "", matched: false, source: "" });
       updateSecondCard({ id: "", matched: false, source: "" });
     }, 1500);
+  };
+
+  const checkEndOfGame = (totalPoints: number) => {
+    if (totalPoints === totalCards[difficulty]) {
+      setShowWinner(true);
+    }
+  };
+
+  const goToHome = () => {
+    clear();
+    navigate("/");
+  };
+
+  const restartGame = () => {
+    setShowWinner(false);
+    setTotalPoints(0);
+    restartGameStore();
   };
 
   return (
@@ -138,7 +176,14 @@ export const Game = () => {
           ))}
         </Grid>
       </HStack>
-      <WinningUserModal isOpen={true} onClose={() => {}} user={user1} />
+      <WinningUserModal
+        isOpen={showWinner}
+        user1={user1}
+        user2={user2}
+        onClose={() => setShowWinner(false)}
+        restartGame={restartGame}
+        goToHome={goToHome}
+      />
     </Stack>
   );
 };

@@ -14,15 +14,24 @@ import Trophy from "../../../../assets/trophy.png";
 
 interface WinningUserModalProps {
   isOpen: boolean;
-  user: User;
+  user1: User;
+  user2: User;
   onClose: () => void;
+  goToHome: () => void;
+  restartGame: () => void;
 }
 
 export const WinningUserModal = ({
   isOpen,
-  user,
+  user1,
+  user2,
   onClose,
+  goToHome,
+  restartGame,
 }: WinningUserModalProps) => {
+  const winner = user1.pontuation >= user2.pontuation ? user1 : user2;
+  const isTied = user1.pontuation === user2.pontuation;
+
   return (
     <Modal
       closeOnOverlayClick={false}
@@ -46,38 +55,64 @@ export const WinningUserModal = ({
         >
           Parabéns!!
           <br />
-          Você ganhou
+          {isTied ? "Partida empatada" : "Você ganhou"}
         </Text>
 
-        <Stack
-          position="relative"
-          rounded="full"
-          padding="4px"
-          borderRadius="full"
-          borderWidth="3px"
-          borderColor="brand.100"
-          marginBottom="16px"
-        >
-          <Image src={user.image} maxW="172px" maxH="172px" />
-          <Image
-            src={Trophy}
-            maxW="96px"
-            maxH="96px"
-            position="absolute"
-            bottom="-24px"
-            right="-24px"
-          />
-        </Stack>
+        <HStack spacing="32px">
+          <Stack>
+            <Stack
+              position="relative"
+              rounded="full"
+              padding="4px"
+              borderRadius="full"
+              borderWidth="3px"
+              borderColor="brand.100"
+              marginBottom="16px"
+            >
+              <Image src={winner.image} w="172px" h="172px" />
+              {!isTied && (
+                <Image
+                  src={Trophy}
+                  maxW="96px"
+                  maxH="96px"
+                  position="absolute"
+                  bottom="-24px"
+                  right="-24px"
+                />
+              )}
+            </Stack>
 
-        <Text fontSize="24px" fontWeight="500">
-          {user.name}
-        </Text>
+            <Text fontSize="24px" fontWeight="500" textAlign="center">
+              {winner.name}
+            </Text>
+          </Stack>
+
+          {isTied && (
+            <Stack>
+              <Stack
+                position="relative"
+                rounded="full"
+                padding="4px"
+                borderRadius="full"
+                borderWidth="3px"
+                borderColor="brand.100"
+                marginBottom="16px"
+              >
+                <Image src={user2.image} w="172px" h="172px" />
+              </Stack>
+
+              <Text fontSize="24px" fontWeight="500" textAlign="center">
+                {user2.name}
+              </Text>
+            </Stack>
+          )}
+        </HStack>
 
         <Stack marginTop="48px">
           <Text fontSize="24px" textAlign="center">
             Pontuação:{" "}
             <Text fontWeight="600" display="inline">
-              {user.pontuation}
+              {winner.pontuation}
             </Text>
           </Text>
           <Text fontSize="24px" textAlign="center">
@@ -97,6 +132,7 @@ export const WinningUserModal = ({
             width="264px"
           >
             <Button
+              onClick={restartGame}
               paddingX="32px"
               color="brand.600"
               borderRadius="full"
@@ -114,6 +150,7 @@ export const WinningUserModal = ({
             width="264px"
           >
             <Button
+              onClick={goToHome}
               paddingX="32px"
               color="white"
               background="brand.600"
@@ -121,6 +158,7 @@ export const WinningUserModal = ({
               borderColor="white"
               borderRadius="full"
               fontWeight="400"
+              _hover={{ opacity: 0.7 }}
             >
               Ir para início
             </Button>

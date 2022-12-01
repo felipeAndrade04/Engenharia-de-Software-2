@@ -44,6 +44,12 @@ export const StartGame = () => {
   const updateUser2Name = useGameStore((state) => state.updateUser2Name);
   const updateUser1Image = useGameStore((state) => state.updateUser1Image);
   const updateUser2Image = useGameStore((state) => state.updateUser2Image);
+  const updateUser1Pontuation = useGameStore(
+    (state) => state.updateUser1Pontuation
+  );
+  const updateUser2Pontuation = useGameStore(
+    (state) => state.updateUser2Pontuation
+  );
 
   const currentImage = selectedUser === "1" ? user1.image : user2.image;
 
@@ -68,6 +74,8 @@ export const StartGame = () => {
     updateDifficulty(values.difficulty);
     updateUser1Name(values.user1);
     updateUser2Name(values.user2 || "");
+    updateUser1Pontuation(0);
+    updateUser2Pontuation(0);
     navigate("/partida");
   };
 
