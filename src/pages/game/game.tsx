@@ -121,7 +121,7 @@ export const Game = () => {
           gap={4}
         >
           {cards.map((card) => (
-            <GridItem width="full">
+            <GridItem width="full" order={card.order}>
               <Card
                 size={sizes[difficulty].size}
                 key={card.id}

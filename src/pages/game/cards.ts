@@ -90,7 +90,7 @@ const generateArrImages = (images: string[]): CardType[] => {
     id: uuidv4(),
     matched: false,
     source: image,
-    order: Math.floor(Math.random() * images.length),
+    order: Math.floor(Math.random() * (images.length * 2)),
   }));
 };
 
