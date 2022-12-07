@@ -10,7 +10,8 @@ import {
 } from "@chakra-ui/react";
 import { User } from "../../../../store";
 import { IoPlayOutline } from "react-icons/io5";
-import Trophy from "../../../../assets/trophy.png";
+import Gold from "../../../../assets/gold-medal.png";
+import Silver from "../../../../assets/silver-medal.png";
 
 interface WinningUserModalProps {
   isOpen: boolean;
@@ -32,7 +33,66 @@ export const WinningUserModal = ({
   restartGame,
 }: WinningUserModalProps) => {
   const winner = user1.pontuation >= user2.pontuation ? user1 : user2;
+  const loser = user1.pontuation < user2.pontuation ? user1 : user2;
   const isTied = user1.pontuation === user2.pontuation;
+  const singlePlayer = !user2.name;
+
+  const finalMessage = () => {
+    if (singlePlayer) {
+      return "Parabéns!! Você ganhou";
+    }
+
+    if (isTied) {
+      return "Parabéns!! Partida empatada";
+    }
+
+    return `${winner.name} ganhou!!!`;
+  };
+
+  const pontuationText = () => {
+    let title1 = "";
+    let title2 = "";
+    let value1 = "";
+    let value2 = "";
+
+    if (singlePlayer) {
+      title1 = "Pontuação";
+      value1 = winner.pontuation.toString();
+      title2 = "Tempo";
+      value2 = duration;
+    }
+
+    if (isTied) {
+      title1 = "Pontuação";
+      value1 = winner.pontuation.toString();
+    }
+
+    if (!isTied && !singlePlayer) {
+      title1 = "Primeiro lugar";
+      value1 = `${winner.name} (${winner.pontuation}pts)`;
+      title2 = "Segundo lugar";
+      value2 = `${loser.name} (${loser.pontuation}pts)`;
+    }
+
+    return (
+      <Stack marginTop="48px">
+        <Text fontSize="24px" textAlign="center">
+          {title1}{" "}
+          <Text fontWeight="600" display="inline">
+            {value1}
+          </Text>
+        </Text>
+        {title2 && value2 ? (
+          <Text fontSize="24px" textAlign="center">
+            {title2}:{" "}
+            <Text fontWeight="600" display="inline">
+              {value2}
+            </Text>
+          </Text>
+        ) : null}
+      </Stack>
+    );
+  };
 
   return (
     <Modal
@@ -55,12 +115,10 @@ export const WinningUserModal = ({
           textAlign="center"
           marginBottom="38px"
         >
-          Parabéns!!
-          <br />
-          {isTied ? "Partida empatada" : "Você ganhou"}
+          {finalMessage()}
         </Text>
 
-        <HStack spacing="32px">
+        <HStack spacing="120px">
           <Stack>
             <Stack
               position="relative"
@@ -74,7 +132,7 @@ export const WinningUserModal = ({
               <Image src={winner.image} w="172px" h="172px" />
               {!isTied && (
                 <Image
-                  src={Trophy}
+                  src={Gold}
                   maxW="96px"
                   maxH="96px"
                   position="absolute"
@@ -84,12 +142,14 @@ export const WinningUserModal = ({
               )}
             </Stack>
 
-            <Text fontSize="24px" fontWeight="500" textAlign="center">
-              {winner.name}
-            </Text>
+            {isTied && (
+              <Text fontSize="24px" fontWeight="500" textAlign="center">
+                {winner.name}
+              </Text>
+            )}
           </Stack>
 
-          {isTied && (
+          {user2 && !singlePlayer && (
             <Stack>
               <Stack
                 position="relative"
@@ -100,32 +160,35 @@ export const WinningUserModal = ({
                 borderColor="brand.100"
                 marginBottom="16px"
               >
-                <Image src={user2.image} w="172px" h="172px" />
+                <Image
+                  src={loser.image}
+                  w={isTied ? "172px" : "132px"}
+                  h={isTied ? "172px" : "132px"}
+                />
+                {!isTied && (
+                  <Image
+                    src={Silver}
+                    maxW="96px"
+                    maxH="96px"
+                    position="absolute"
+                    bottom="-24px"
+                    right="-24px"
+                  />
+                )}
               </Stack>
 
-              <Text fontSize="24px" fontWeight="500" textAlign="center">
-                {user2.name}
-              </Text>
+              {isTied && (
+                <Text fontSize="24px" fontWeight="500" textAlign="center">
+                  {loser.name}
+                </Text>
+              )}
             </Stack>
           )}
         </HStack>
 
-        <Stack marginTop="48px">
-          <Text fontSize="24px" textAlign="center">
-            Pontuação:{" "}
-            <Text fontWeight="600" display="inline">
-              {winner.pontuation}
-            </Text>
-          </Text>
-          <Text fontSize="24px" textAlign="center">
-            Duração:{" "}
-            <Text fontWeight="600" display="inline">
-              {duration}
-            </Text>
-          </Text>
-        </Stack>
+        {pontuationText()}
 
-        <HStack spacing="32px" marginTop="24px">
+        <HStack spacing="32px" marginTop="68px">
           <Stack
             padding="4px"
             borderRadius="full"
