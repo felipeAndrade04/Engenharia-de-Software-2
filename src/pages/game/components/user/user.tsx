@@ -5,9 +5,10 @@ interface UserType {
   name: string;
   pontuation: number;
   image: string;
+  time?: string;
 }
 
-export const User = ({ selected, name, pontuation, image }: UserType) => {
+export const User = ({ selected, name, pontuation, image, time }: UserType) => {
   return (
     <Stack
       width="184px"
@@ -47,13 +48,19 @@ export const User = ({ selected, name, pontuation, image }: UserType) => {
       <Stack position="absolute" bottom={"-20px"}>
         <ScaleFade initialScale={0.9} in={selected}>
           <Stack
+            minWidth="70px"
             paddingX="16px"
             paddingY="8px"
             borderRadius="full"
             bg="brand.600"
           >
-            <Text fontSize="12px" color="white" fontWeight="400">
-              Sua vez!
+            <Text
+              fontSize="12px"
+              color="white"
+              fontWeight="400"
+              textAlign="center"
+            >
+              {time ? time : "Sua vez!"}
             </Text>
           </Stack>
         </ScaleFade>

@@ -1,5 +1,5 @@
 import { Grid, GridItem, HStack, Stack } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGameStore } from "../../store";
 import { CardType } from "./cards";
@@ -35,6 +35,7 @@ const totalCards = {
 
 export const Game = () => {
   const navigate = useNavigate();
+  const [time, setTime] = useState(0);
   const [showWinner, setShowWinner] = useState(false);
   const gameMode = useGameStore((state) => state.gameMode);
   const difficulty = useGameStore((state) => state.difficulty);
@@ -57,6 +58,30 @@ export const Game = () => {
   const updateUser2Pontuation = useGameStore(
     (state) => state.updateUser2Pontuation
   );
+
+  const minutes = Math.floor(time / 60)
+    .toString()
+    .padStart(2, "0");
+  const seconds = (time % 60).toString().padStart(2, "0");
+  const formattedTime = `${minutes}:${seconds}`;
+
+  useEffect(() => {
+    let interval = {} as NodeJS.Timer;
+
+    if (gameMode === "SinglePlayer") {
+      interval = setInterval(() => {
+        setTime((time) => time + 1);
+      }, 1000);
+    }
+
+    if (showWinner) {
+      clearInterval(interval);
+    }
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [gameMode, showWinner]);
 
   const onCardClick = (card: CardType) => {
     if (!firstCard.id) {
@@ -125,6 +150,7 @@ export const Game = () => {
     setShowWinner(false);
     setTotalPoints(0);
     restartGameStore();
+    setTime(0);
   };
 
   return (
@@ -144,6 +170,7 @@ export const Game = () => {
             name={user1.name}
             pontuation={user1.pontuation}
             image={user1.image}
+            time={gameMode === "SinglePlayer" ? formattedTime : ""}
           />
           {gameMode === "MultiPlayer" && (
             <User
@@ -159,7 +186,7 @@ export const Game = () => {
           gap={4}
         >
           {cards.map((card) => (
-            <GridItem width="full" order={card.order}>
+            <GridItem width="full" order={card.order} key={card.id}>
               <Card
                 size={sizes[difficulty].size}
                 key={card.id}
@@ -180,6 +207,7 @@ export const Game = () => {
         isOpen={showWinner}
         user1={user1}
         user2={user2}
+        duration={formattedTime}
         onClose={() => setShowWinner(false)}
         restartGame={restartGame}
         goToHome={goToHome}

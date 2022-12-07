@@ -16,6 +16,7 @@ interface WinningUserModalProps {
   isOpen: boolean;
   user1: User;
   user2: User;
+  duration: string;
   onClose: () => void;
   goToHome: () => void;
   restartGame: () => void;
@@ -25,6 +26,7 @@ export const WinningUserModal = ({
   isOpen,
   user1,
   user2,
+  duration,
   onClose,
   goToHome,
   restartGame,
@@ -118,7 +120,7 @@ export const WinningUserModal = ({
           <Text fontSize="24px" textAlign="center">
             Duração:{" "}
             <Text fontWeight="600" display="inline">
-              2:40
+              {duration}
             </Text>
           </Text>
         </Stack>
